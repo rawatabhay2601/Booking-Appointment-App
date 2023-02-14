@@ -28,13 +28,13 @@ const btn = document.getElementById("btn");
 // -------------------------------------------------------------------------------
 // Storing name, date and email of the user
 
-
+// creating li tags
 btn.addEventListener('click',saving);
-let ul = document.getElementById('display');
+
+let ul = document.querySelector('#display');
 
 function saving(){
-    
-    
+
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
     var date = document.getElementById('date').value;
@@ -53,6 +53,26 @@ function saving(){
     let li = document.createElement('li');
     let data = document.createTextNode(obj.name+' - '+obj.email+' - '+obj.date);
     li.appendChild(data);
+
+    // creating delete button
+    let del = document.createElement('button');
+    let deleteData = document.createTextNode('Delete');
+    del.type = 'button';
+    del.className = 'delete';
+    del.appendChild(deleteData);
+
+    // deleting li tag
+    del.onclick = (e) => {
+        localStorage.removeItem(obj.email);
+        ul.removeChild(e.target.parentElement);
+    }
+
+    // appending delete to li 
+    li.appendChild(del);
+
+    // appending to ul tag
     ul.appendChild(li);
 
 }
+
+
