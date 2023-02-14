@@ -8,7 +8,6 @@ const btn = document.getElementById("btn");
 
 // btn.addEventListener('mouseout', testing);
 
-
 // const cont = document.querySelector("#info");
 
 // var contact = function(){
@@ -25,22 +24,29 @@ const btn = document.getElementById("btn");
 //     console.log(event.target.date.value);
 // }
 
-// ------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 // Storing name, date and email of the user
 
 btn.addEventListener('click',saving);
 
-function saving(e){
+function saving(){
 
-    var name = document.getElementById('name');
-    var email = document.getElementById('email');
-    var date = document.getElementById('date');
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var date = document.getElementById('date').value;
 
-    localStorage.setItem('name',name.value);
-    localStorage.setItem('email',email.value);
-    localStorage.setItem('date',date.value);
+    var obj = {
+        'name':name,
+        'email':email,
+        'date':date
+    };
 
-    console.log(localStorage.getItem('name'));
-    console.log(localStorage.getItem('email'));
-    console.log(localStorage.getItem('date'));
+    // serialized object
+    let objStr = JSON.stringify(obj);
+    localStorage.setItem("myObj",objStr);
+    console.log(localStorage.getItem('myObj'));
+
+    // deserialized object
+    let objDestr = JSON.parse(localStorage.getItem("myObj"));
+    console.log(objDestr);
 }
