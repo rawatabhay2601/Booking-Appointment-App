@@ -23,14 +23,18 @@ const btn = document.getElementById("btn");
 //     console.log(event.target.email.value);
 //     console.log(event.target.date.value);
 // }
+ +
 
 // -------------------------------------------------------------------------------
 // Storing name, date and email of the user
 
+
 btn.addEventListener('click',saving);
+let ul = document.getElementById('display');
 
 function saving(){
-
+    
+    
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
     var date = document.getElementById('date').value;
@@ -43,10 +47,12 @@ function saving(){
 
     // serialized object
     let objStr = JSON.stringify(obj);
-    localStorage.setItem("myObj",objStr);
-    console.log(localStorage.getItem('myObj'));
+    localStorage.setItem(email,objStr);
 
-    // deserialized object
-    let objDestr = JSON.parse(localStorage.getItem("myObj"));
-    console.log(objDestr);
+    // Appending data to li tag
+    let li = document.createElement('li');
+    let data = document.createTextNode(obj.name+' - '+obj.email+' - '+obj.date);
+    li.appendChild(data);
+    ul.appendChild(li);
+
 }
