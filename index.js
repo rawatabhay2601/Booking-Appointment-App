@@ -25,6 +25,7 @@ const btn = document.getElementById("btn");
 //     console.log(event.target.date.value);
 // }
 
+// ------------------------------------------------------------------------------
 // Storing name, date and email of the user
 
 btn.addEventListener('click',saving);
@@ -38,4 +39,8 @@ function saving(e){
     localStorage.setItem('name',name.value);
     localStorage.setItem('email',email.value);
     localStorage.setItem('date',date.value);
+
+    console.log(localStorage.getItem('name'));
+    console.log(localStorage.getItem('email'));
+    console.log(localStorage.getItem('date'));
 }
