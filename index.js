@@ -35,19 +35,19 @@ let ul = document.querySelector('#display');
 
 function saving(){
 
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-    var date = document.getElementById('date').value;
+    var name = document.getElementById('name');
+    var email = document.getElementById('email');
+    var date = document.getElementById('date');
 
     var obj = {
-        'name':name,
-        'email':email,
-        'date':date
+        'name':name.value,
+        'email':email.value,
+        'date':date.value
     };
 
     // serialized object
     let objStr = JSON.stringify(obj);
-    localStorage.setItem(email,objStr);
+    localStorage.setItem(email.value,objStr);
 
     // Appending data to li tag
     let li = document.createElement('li');
@@ -61,6 +61,22 @@ function saving(){
     del.className = 'delete';
     del.appendChild(deleteData);
 
+    // creating edit button
+    let edit = document.createElement('button');
+    let editData = document.createTextNode('Edit');
+    edit.type = 'button';
+    edit.className = 'edit';
+    edit.appendChild(editData);
+
+    // edit functionality
+    edit.onclick = (e) => {
+        name.value = obj.name;
+        email.value = obj.email;
+        date.value = obj.date;
+        localStorage.removeItem(obj.email);
+        ul.removeChild(e.target.parentElement);
+    }
+
     // deleting li tag
     del.onclick = (e) => {
         localStorage.removeItem(obj.email);
@@ -69,10 +85,11 @@ function saving(){
 
     // appending delete to li 
     li.appendChild(del);
+    li.appendChild(edit);
 
     // appending to ul tag
     ul.appendChild(li);
 
 }
 
-
+// localStorage.clear()
