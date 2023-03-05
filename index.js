@@ -1,29 +1,29 @@
 const btn = document.getElementById("btn");
 
-// var testing = function(){
-//     var msg = document.querySelector(".msg");
-//     msg.textContent = 'This will upload the details';
-//     setTimeout(()=> msg.textContent = '', 5000);
-// }
+// // var testing = function(){
+// //     var msg = document.querySelector(".msg");
+// //     msg.textContent = 'This will upload the details';
+// //     setTimeout(()=> msg.textContent = '', 5000);
+// // }
 
-// btn.addEventListener('mouseout', testing);
+// // btn.addEventListener('mouseout', testing);
 
-// const cont = document.querySelector("#info");
+// // const cont = document.querySelector("#info");
 
-// var contact = function(){
-//     var contactDetails = document.querySelector(".info");
-//     contactDetails.textContent = "Customer Services : 9080765789";
-//     setTimeout(()=>contactDetails.textContent = "",4000);
-// }   
-// cont.addEventListener('mouseover', contact);
+// // var contact = function(){
+// //     var contactDetails = document.querySelector(".info");
+// //     contactDetails.textContent = "Customer Services : 9080765789";
+// //     setTimeout(()=>contactDetails.textContent = "",4000);
+// // }   
+// // cont.addEventListener('mouseover', contact);
 
-// const reloadIssue = function(event){
-//     event.preventDefault();
-//     console.log(event.target.name.value);
-//     console.log(event.target.email.value);
-//     console.log(event.target.date.value);
-// }
- +
+// // const reloadIssue = function(event){
+// //     event.preventDefault();
+// //     console.log(event.target.name.value);
+// //     console.log(event.target.email.value);
+// //     console.log(event.target.date.value);
+// // }
+//  +
 
 // -------------------------------------------------------------------------------
 // Storing name, date and email of the user
@@ -45,9 +45,17 @@ function saving(){
         'date':date.value
     };
 
-    // serialized object
-    let objStr = JSON.stringify(obj);
-    localStorage.setItem(email.value,objStr);
+    // // serialized object
+    // let objStr = JSON.stringify(obj);
+    // localStorage.setItem(email.value,objStr);
+
+    // using axios to push data to CrudCrud
+    axios.post('https://crudcrud.com/api/6a3d245342b24f23a1845882f066fa04/PersonalDetails',obj)
+    .then( reponse => console.log("Posting data : ",reponse))
+    .catch( err => {
+        document.body.innerHTML = "<h2 style='color:red'>Something went wrong</h2>";
+        console.error(err);
+    })
 
     // Appending data to li tag
     let li = document.createElement('li');
@@ -79,7 +87,22 @@ function saving(){
 
     // deleting li tag
     del.onclick = (e) => {
-        localStorage.removeItem(obj.email);
+        // localStorage.removeItem(obj.email);
+
+        axios.get('https://crudcrud.com/api/6a3d245342b24f23a1845882f066fa04/PersonalDetails')
+        .then( (response) =>{
+            // iterating each data entry using for loop
+            for(let i of response.data){
+                if((i.email == obj.email) && (i.name == obj.name)){
+                    axios.delete(`https://crudcrud.com/api/6a3d245342b24f23a1845882f066fa04/PersonalDetails/${i._id}`)
+                    .then( () => alert(`${obj.name} has been deleted at ${new Date()}`))
+                    .catch( (err) => console.error(err));
+                };
+            }
+        })
+        .catch( err => console.error(err));
+
+        // deleting the tag
         ul.removeChild(e.target.parentElement);
     }
 
@@ -89,7 +112,7 @@ function saving(){
 
     // appending to ul tag
     ul.appendChild(li);
-
 }
+
 
 // localStorage.clear()
