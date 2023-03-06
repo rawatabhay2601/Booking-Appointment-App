@@ -40,9 +40,9 @@ function saving(){
     var date = document.getElementById('date');
 
     var obj = {
-        'name':name.value,
-        'email':email.value,
-        'date':date.value
+        'name': name.value,
+        'email': email.value,
+        'date': date.value
     };
 
     // // serialized object
@@ -78,11 +78,26 @@ function saving(){
 
     // edit functionality
     edit.onclick = (e) => {
-        name.value = obj.name;
-        email.value = obj.email;
-        date.value = obj.date;
-        localStorage.removeItem(obj.email);
-        ul.removeChild(e.target.parentElement);
+        axios.get('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails')
+        .then( (response) =>{
+            let dataStr = e.target.parentElement.textContent;
+            let strName = dataStr.substring(0,dataStr.indexOf('-')-1);
+
+            for(let i of response.data){
+                if(i.name == strName){
+                    name.value = obj.name;
+                    email.value = obj.email;
+                    date.value = obj.date;
+                    axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails/${i._id}`)
+                    .then( () => alert(`${obj.name} has been deleted at ${new Date()}`))
+                    .catch( (err) => console.error(err));
+                    ul.removeChild(e.target.parentElement);
+                }
+            }
+        })
+        .catch( err => console.error(err));
+        // ul.removeChild(e.target.parentElement);
+
     }
 
     // deleting li tag
@@ -157,8 +172,29 @@ window.addEventListener("DOMContentLoaded", () => {
                 .catch( (err) => console.error(err));                    
                 
                 ul.removeChild(e.target.parentElement);
-            } 
+            }
+
+
+            // editing button functionality
+            edit.onclick = (e) => {
+                // getting data to the login
+                let name = document.getElementById('name');
+                let email = document.getElementById('email');
+                let date = document.getElementById('date');
+
+                date.value = i.date;
+                name.value = i.name;
+                email.value = i.email;
+
+                // deleting data from CRUDCRUD
+                axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails/${i._id}`)
+                .then( () => alert(`${name.value} has been deleted at ${new Date()}`))
+                .catch( (err) => console.error(err));                    
+            
+                ul.removeChild(e.target.parentElement);
+            }
         }
     })
     .catch((err) => console.error(err))
+
 })
