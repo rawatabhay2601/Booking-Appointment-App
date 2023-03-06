@@ -50,7 +50,7 @@ function saving(){
     // localStorage.setItem(email.value,objStr);
 
     // using axios to push data to CrudCrud
-    axios.post('https://crudcrud.com/api/6a3d245342b24f23a1845882f066fa04/PersonalDetails',obj)
+    axios.post('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails',obj)
     .then( reponse => console.log("Posting data : ",reponse))
     .catch( err => {
         document.body.innerHTML = "<h2 style='color:red'>Something went wrong</h2>";
@@ -89,12 +89,12 @@ function saving(){
     del.onclick = (e) => {
         // localStorage.removeItem(obj.email);
 
-        axios.get('https://crudcrud.com/api/6a3d245342b24f23a1845882f066fa04/PersonalDetails')
+        axios.get('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails')
         .then( (response) =>{
             // iterating each data entry using for loop
             for(let i of response.data){
                 if((i.email == obj.email) && (i.name == obj.name)){
-                    axios.delete(`https://crudcrud.com/api/6a3d245342b24f23a1845882f066fa04/PersonalDetails/${i._id}`)
+                    axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails${i._id}`)
                     .then( () => alert(`${obj.name} has been deleted at ${new Date()}`))
                     .catch( (err) => console.error(err));
                 };
@@ -114,5 +114,51 @@ function saving(){
     ul.appendChild(li);
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+    // creating a GET request
+    axios.get('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails')
+    .then( (response) => {
+        // for loop for each object
+        for(let i of response.data){
 
-// localStorage.clear()
+            // creating li tag
+            let li = document.createElement('li');
+            let data = document.createTextNode(i.name+' - '+i.email+' - '+i.date);
+            li.appendChild(data);
+
+            // creating delete button
+            let del = document.createElement('button');
+            let deleteData = document.createTextNode('Delete');
+            del.type = 'button';
+            del.className = 'delete';
+            del.appendChild(deleteData);
+
+            // creating edit button
+            let edit = document.createElement('button');
+            let editData = document.createTextNode('Edit');
+            edit.type = 'button';
+            edit.className = 'edit';
+            edit.appendChild(editData);
+
+            // appending delete to li 
+            li.appendChild(del);
+            li.appendChild(edit);
+
+            // appending to ul tag
+            ul.appendChild(li);
+
+            // delete button functionality
+            del.onclick = (e) => {
+                
+                // click delete
+                let serverName = i.name;
+                axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails/${i._id}`)
+                .then( () => alert(`${serverName} has been deleted at ${new Date()}`))
+                .catch( (err) => console.error(err));                    
+                
+                ul.removeChild(e.target.parentElement);
+            } 
+        }
+    })
+    .catch((err) => console.error(err))
+})
