@@ -50,7 +50,7 @@ function saving(){
     // localStorage.setItem(email.value,objStr);
 
     // using axios to push data to CrudCrud
-    axios.post('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails',obj)
+    axios.post('http://localhost:4000/bookingApp/postData',obj)
     .then( reponse => console.log("Posting data : ",reponse))
     .catch( err => {
         document.body.innerHTML = "<h2 style='color:red'>Something went wrong</h2>";
@@ -78,7 +78,7 @@ function saving(){
 
     // edit functionality
     edit.onclick = (e) => {
-        axios.get('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails')
+        axios.get('http://localhost:4000/bookingApp/postData')
         .then( (response) =>{
             let dataStr = e.target.parentElement.textContent;
             let strName = dataStr.substring(0,dataStr.indexOf('-')-1);
@@ -88,7 +88,7 @@ function saving(){
                     name.value = obj.name;
                     email.value = obj.email;
                     date.value = obj.date;
-                    axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails/${i._id}`)
+                    axios.delete(`http://localhost:4000/bookingApp/postData/${i._id}`)
                     .then( () => alert(`${obj.name} has been deleted at ${new Date()}`))
                     .catch( (err) => console.error(err));
                     ul.removeChild(e.target.parentElement);
@@ -97,19 +97,18 @@ function saving(){
         })
         .catch( err => console.error(err));
         // ul.removeChild(e.target.parentElement);
-
     }
 
     // deleting li tag
     del.onclick = (e) => {
         // localStorage.removeItem(obj.email);
 
-        axios.get('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails')
+        axios.get('https://crudcrud.com/api/7a11109289a44c1687031906df792307/PersonalDetails')
         .then( (response) =>{
             // iterating each data entry using for loop
             for(let i of response.data){
                 if((i.email == obj.email) && (i.name == obj.name)){
-                    axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails${i._id}`)
+                    axios.delete(`https://crudcrud.com/api/7a11109289a44c1687031906df792307/PersonalDetails/${i._id}`)
                     .then( () => alert(`${obj.name} has been deleted at ${new Date()}`))
                     .catch( (err) => console.error(err));
                 };
@@ -131,8 +130,9 @@ function saving(){
 
 window.addEventListener("DOMContentLoaded", () => {
     // creating a GET request
-    axios.get('https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails')
+    axios.get('https://crudcrud.com/api/7a11109289a44c1687031906df792307/PersonalDetails')
     .then( (response) => {
+
         // for loop for each object
         for(let i of response.data){
 
@@ -167,7 +167,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 
                 // click delete
                 let serverName = i.name;
-                axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails/${i._id}`)
+                axios.delete(`https://crudcrud.com/api/7a11109289a44c1687031906df792307/PersonalDetails/${i._id}`)
                 .then( () => alert(`${serverName} has been deleted at ${new Date()}`))
                 .catch( (err) => console.error(err));                    
                 
@@ -187,7 +187,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 email.value = i.email;
 
                 // deleting data from CRUDCRUD
-                axios.delete(`https://crudcrud.com/api/ceeeea69cbf4428bb732a2b8bf89acfe/PersonalDetails/${i._id}`)
+                axios.delete(`https://crudcrud.com/api/7a11109289a44c1687031906df792307/PersonalDetails/${i._id}`)
                 .then( () => alert(`${name.value} has been deleted at ${new Date()}`))
                 .catch( (err) => console.error(err));                    
             
@@ -196,5 +196,4 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     })
     .catch((err) => console.error(err))
-
 })
